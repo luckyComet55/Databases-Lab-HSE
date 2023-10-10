@@ -35,7 +35,12 @@ namespace db {
                 normalCleanup();
             }
         private:
+            #ifdef __linux__
             const std::filesystem::path root{"/home/user1/luckygres-data"};
+            #else
+            const std::filesystem::path root{"C:\\Users\\Public\\luckygres-data"};
+            #endif
+
             const char* dirs[L1_DIRS] = {"students", "assignments", "student-assignment"};
             std::size_t nodeSize;
             std::size_t clusterSize;
