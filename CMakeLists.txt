@@ -5,6 +5,6 @@ project(luckygres VERSION 1.0)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-set(SRC_LIST src/dbms/ApplicationManager.hpp src/dbms/ApplicationManager.cpp src/main.cpp)
+set(SRC_LIST src/dbms/EntityManager.hpp src/dbms/Container.hpp src/dbms/Container.cpp src/main.cpp)
 
 add_executable(${PROJECT_NAME} ${SRC_LIST})

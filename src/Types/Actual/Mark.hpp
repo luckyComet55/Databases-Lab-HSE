@@ -1,4 +1,5 @@
 #include "Types/Meta/Uuid.hpp"
+#include "Types/Meta/Constants.hpp"
 
 #ifndef MARK_HPP
 #define MARK_HPP
@@ -17,18 +18,28 @@ namespace db {
 
         class StudentMark {
         public:
-            StudentMark() = delete;
-            StudentMark(db::meta::Uuid student_id, db::meta::Uuid assignement_id) :
-                student_id(student_id), assignment_id(assignement_id) {}
-            StudentMark(db::meta::Uuid student_id, db::meta::Uuid assignement_id, db::types::Mark Mark) :
-                student_id(student_id), assignment_id(assignement_id), mark(mark) {}
-            StudentMark operator=(const StudentMark& other) {
-                student_id = other.student_id;
-                assignment_id = other.assignment_id;
-                mark = other.mark;
+            StudentMark(const std::string& student_id_l, const std::string& assignment_id_l) {
+                for (int i = 0; i < MAX_ID_LEN; ++i) {
+                    student_id[i] = student_id_l[i];
+                }
+
+                for (int i = 0; i < MAX_ID_LEN; ++i) {
+                    assignment_id[i] = assignment_id_l[i];
+                }
+            }
+
+            StudentMark(const std::string& student_id_l, const std::string& assignment_id_l, db::types::Mark Mark) :
+                mark(mark) {
+                for (int i = 0; i < MAX_ID_LEN; ++i) {
+                    student_id[i] = student_id_l[i];
+                }
+
+                for (int i = 0; i < MAX_ID_LEN; ++i) {
+                    assignment_id[i] = assignment_id_l[i];
+                }
             }
         private:
-            db::meta::Uuid student_id, assignment_id;
+            char student_id[MAX_ID_LEN], assignment_id[MAX_ID_LEN];
             db::types::Mark mark;
         };
     }

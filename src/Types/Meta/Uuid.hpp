@@ -6,15 +6,10 @@
 namespace db {
 
     namespace meta {
-        class Uuid {
-        public:
-            Uuid();
-            std::string getUuid() const {
-                return value;
-            }
-        private:
-            std::string value;
-        };
+        
+        namespace uuid {
+            std::string generateUuid();
+        }
     }
 }
 

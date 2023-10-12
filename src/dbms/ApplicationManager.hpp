@@ -1,13 +1,13 @@
 #include <string>
 #include <filesystem>
 #include <iostream>
+#include <vector>
 #include <fstream>
 
-#include "Types/Meta/Record.hpp"
 #include "Types/Actual/Student.hpp"
 #include "Types/Actual/Assignment.hpp"
 #include "Types/Actual/Mark.hpp"
-#include "dbms/EntityManager.hpp"
+#include "EntityManager.hpp"
 
 #ifndef APP_MANAGER_HPP
 #define APP_MANAGER_HPP
@@ -30,7 +30,12 @@ namespace db {
             const std::filesystem::path root{"C:\\Users\\Public\\luckygres-data"};
             #endif
 
-            const char* dirs[L1_DIRS] = {"students", "assignments", "student-mark"};
+            const char* dirs[L1_DIRS] = {"students", "assignments", "student-task"};
+            const std::vector<std::vector<std::string>> entityFields = {
+                {"id", "name", "surname", "patronym"},
+                {"id", "path_to_file"},
+                {"student_id",  "variant_id"},
+            };
 
             db::fs::EntityManager<db::types::Student> studentManager;
             db::fs::EntityManager<db::types::Assignment> assignmentManager;

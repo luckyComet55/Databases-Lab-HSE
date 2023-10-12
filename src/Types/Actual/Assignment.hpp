@@ -1,5 +1,7 @@
 #include <string>
 
+#include "Types/Meta/Constants.hpp"
+
 #ifndef ASSIGNMENT_HPP
 #define ASSIGNMENT_HPP
 
@@ -9,15 +11,19 @@ namespace db {
 
         class Assignment {
         public:
-            Assignment() = delete;
-            Assignment(const Assignment& other) : title(other.title) {}
-            Assignment(Assignment&& other) : title(std::move(other.title)) {}
-            Assignment(const std::string& title) : title(title) {}
-            Assignment(std::string&& title) : title(title) {}
+            Assignment(char title_l[MAX_VAR_LEN]) {
+                for (int i = 0; i < MAX_VAR_LEN; ++i) {
+                    title[i] = ' ';
+                }
+
+                for (int i = 0; i < MAX_VAR_LEN && title_l[i] != ' '; ++i) {
+                    title[i] = title_l[i];
+                }
+            }
 
             std::string getTitle() { return title; };
         private:
-            std::string title;
+            char title[MAX_VAR_LEN];
         };
     }
 }

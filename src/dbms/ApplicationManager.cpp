@@ -16,9 +16,9 @@ namespace db {
                 exitCleanup();
                 std::exit(1);
             }
-            studentManager = db::fs::EntityManager<db::types::Student>(root / dirs[0]);
-            assignmentManager = db::fs::EntityManager<db::types::Assignment>(root / dirs[1]);
-            studentMarkManager = db::fs::EntityManager<db::types::StudentMark>(root / dirs[1]);
+            studentManager = db::fs::EntityManager<db::types::Student>(root / dirs[0], entityFields[0]);
+            assignmentManager = db::fs::EntityManager<db::types::Assignment>(root / dirs[1], entityFields[1]);
+            studentMarkManager = db::fs::EntityManager<db::types::StudentMark>(root / dirs[2], entityFields[2]);
         }
 
         ApplicationManager::~ApplicationManager() {
@@ -38,7 +38,7 @@ namespace db {
         }
 
         void ApplicationManager::exitCleanup() {
-            
+
         }
 
     }
