@@ -1,9 +1,9 @@
 #include <iostream>
 #include <string>
 
-#include "dbms/FileStructure.hpp"
+#include "dbms/ApplicationManager.hpp"
 
 int main() {
-    db::fs::WorkDir wd{};
+    db::fs::ApplicationManager am{};
     return 0;
 }
