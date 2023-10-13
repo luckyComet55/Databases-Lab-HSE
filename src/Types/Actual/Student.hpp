@@ -11,26 +11,26 @@ namespace db {
 
         class Student {
         public:
-            Student(const std::string& id_l, const char name_l[MAX_NAME_LEN], const char surname_l[MAX_NAME_LEN], const char patronym_l[MAX_NAME_LEN]) {
-                for (int i = 0; i < MAX_ID_LEN; ++i) {
+            Student(const std::string& id_l, const char name_l[db::meta::MAX_NAME_LEN], const char surname_l[db::meta::MAX_NAME_LEN], const char patronym_l[db::meta::MAX_NAME_LEN]) {
+                for (int i = 0; i < db::meta::MAX_ID_LEN; ++i) {
                     id[i] = id_l[i];
                 }
 
-                for (int i = 0; i < MAX_NAME_LEN; ++i) {
+                for (int i = 0; i < db::meta::MAX_NAME_LEN; ++i) {
                     name[i] = ' ';
                     surname[i] = ' ';
                     patronym[i] = ' ';
                 }
                 
-                for (int i = 0; i < MAX_NAME_LEN && name_l[i] != ' '; ++i) {
+                for (int i = 0; i < db::meta::MAX_NAME_LEN && name_l[i] != ' '; ++i) {
                     name[i] = name_l[i];
                 }
                 
-                for (int i = 0; i < MAX_NAME_LEN && surname_l[i] != ' '; ++i) {
+                for (int i = 0; i < db::meta::MAX_NAME_LEN && surname_l[i] != ' '; ++i) {
                     surname[i] = surname_l[i];
                 }
 
-                for (int i = 0; i < MAX_NAME_LEN && patronym_l[i] != ' '; ++i) {
+                for (int i = 0; i < db::meta::MAX_NAME_LEN && patronym_l[i] != ' '; ++i) {
                     patronym[i] = patronym_l[i];
                 }
             }
@@ -47,8 +47,8 @@ namespace db {
                 return patronym;
             }
         private:
-            char id[MAX_ID_LEN];
-            char name[MAX_NAME_LEN], surname[MAX_NAME_LEN], patronym[MAX_NAME_LEN];
+            char id[db::meta::MAX_ID_LEN];
+            char name[db::meta::MAX_NAME_LEN], surname[db::meta::MAX_NAME_LEN], patronym[db::meta::MAX_NAME_LEN];
         };
     }
 }

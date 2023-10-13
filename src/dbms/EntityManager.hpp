@@ -12,13 +12,6 @@ namespace db {
 
     namespace fs {
 
-        enum class TransactionStatus {
-            SUCCESS,
-            FAIL_ON_INTERNAL,
-            FAIL_ON_CONSTRAINT,
-            FAIL_ON_SPACE
-        };
-
         template <typename T>
         class EntityManager {
         public:
@@ -35,15 +28,15 @@ namespace db {
                 rootDir = other.rootDir;
             }
 
-            db::fs::TransactionStatus updateRecord(
-                const std::vector<std::string>& fieldsWhere,
-                const std::vector<std::string>& valsWhere,
-                const std::vector<std::string>& fieldsUpdate,
-                const std::vector<std::string>& valsUpdate
+            db::meta::TransactionStatus updateRecord(
+                const std::vector<std::string>&,
+                const std::vector<std::string>&,
+                const std::vector<std::string>&,
+                const std::vector<std::string>&
             );
-            db::fs::TransactionStatus deleteRecord(const std::vector<std::string>& fields, const std::string& vals);
-            std::string getRecord(const std::vector<std::string>& fields, const std::string& vals);
-            db::fs::TransactionStatus insertRecord(const std::vector<std::string>& val);
+            db::meta::TransactionStatus deleteRecord(const std::vector<std::string>&, const std::string&);
+            std::string getRecord(const std::vector<std::string>&, const std::string&);
+            db::meta::TransactionStatus insertRecord(const std::vector<std::string>&);
 
         private:
             std::vector<std::string> fields;
