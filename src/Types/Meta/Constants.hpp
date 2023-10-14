@@ -14,7 +14,8 @@ namespace db {
             SUCCESS,
             FAIL_ON_INTERNAL,
             FAIL_ON_CONSTRAINT,
-            FAIL_ON_SPACE
+            FAIL_ON_SPACE,
+            NOT_FOUND
         };
     }
 }
