@@ -18,7 +18,10 @@ int main(int argc, char* argv[]) {
     manager.show_containers();
     auto res1 = manager.insert_record({"Andrew", "Abramov", "Sergeevich"});
     manager.show_containers();
-    res = manager.insert_record({"Ivan", "Kurikhin", "Vladimirovich"});
+    res = manager.insert_record({"Ivan", "Kurikhin", "Alexandrovich"});
+    manager.show_containers();
+    res = manager.insert_record({"Ivan", "Miroshnochenko", "Vladimirovich"});
+    manager.show_containers();
     std::cout << "Insert ok\n";
     switch (res) {
     case db::meta::TransactionStatus::SUCCESS:
@@ -29,7 +32,23 @@ int main(int argc, char* argv[]) {
         break;
     default:
         std::cout << "Internal error\n";
+        std::exit(10);
+    }
+
+    auto res2 = manager.find_record({"Ivan"}, {1});
+    switch (res2.first) {
+    case db::meta::TransactionStatus::SUCCESS:
+        std::cout << "All good\n";
         break;
+    case db::meta::TransactionStatus::NOT_FOUND:
+        std::cout << "Not found\n";
+        break;
+    default:
+        std::cout << "Internal error\n";
+        std::exit(10);
+    }
+    for (int i = 0; i < res2.second.size(); ++i) {
+        std::cout << "Student: " << res2.second[i] << '\n';
     }
     return 0;
 }

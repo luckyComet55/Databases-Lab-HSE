@@ -47,7 +47,6 @@ namespace db {
                     
                     bool eq = true;
                     for (int i = 0; i < fields_where.size(); ++i) {
-                        std::cout << vals_where[i] << " <-> " << ent.second[fields_where[i]] << '\n';
                         eq = eq && (ent.second[fields_where[i]] == vals_where[i]);
                     }
 
@@ -55,9 +54,9 @@ namespace db {
                         continue;
                     }
 
-                    std::string full_ent = ent.second[0];
+                    std::string full_ent = ent.second[0] + " ";
                     for (int i = 1; i < ent.second.size(); ++i) {
-                        full_ent.append(ent.second[i]);
+                        full_ent.append(ent.second[i] + " ");
                     }
                     res.push_back(full_ent);
                 }
