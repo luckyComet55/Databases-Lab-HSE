@@ -16,6 +16,16 @@ namespace db {
         class Container {
         public:
             Container() = default;
+            Container& operator=(const Container& other) {
+                if (this == &other) {
+                    return *this;
+                }
+                container_id = other.container_id;
+                fields_num = other.fields_num;
+                filepath = other.filepath;
+                return *this;
+            }
+            
             Container(const Container& other) : container_id(other.container_id), fields_num(other.fields_num), filepath(other.filepath) {}
             Container(const std::filesystem::path&, int, std::string&);
 
@@ -25,11 +35,15 @@ namespace db {
                 return container_id;
             }
 
+            std::filesystem::path get_filepath() const {
+                return filepath;
+            }
+
             ~Container() = default;
         private:
-            const std::string container_id;
-            const int fields_num;
-            const std::filesystem::path filepath;
+            std::string container_id;
+            int fields_num;
+            std::filesystem::path filepath;
         };
     }
 }

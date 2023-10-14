@@ -19,67 +19,58 @@ namespace db {
             }
 
             for (auto const& file_entry : std::filesystem::directory_iterator{root_dir}) {
-                std::cout << file_entry.path() << std::endl;
                 auto filename = file_entry.path().stem().string();
                 containers.emplace_back(file_entry.path(), fields.size(), filename);
             }
+        }
+
+        db::meta::TransactionStatus student_manager::delete_record(
+            const std::vector<std::string>& vals_where,
+            const std::vector<int>& fields_where
+        ) {
+            auto check_records = find_containers_where_clause(vals_where, fields_where);
+            if(!check_records.first) {
+                return db::meta::TransactionStatus::FAIL_ON_INTERNAL;
+            }
+
+            for (auto i : check_records.second) {
+                bool res = std::filesystem::remove(containers[i].get_filepath());
+                if (!res) {
+                    return db::meta::TransactionStatus::FAIL_ON_INTERNAL;
+                }
+                containers.erase(containers.begin() + i);
+            }
+
+            return db::meta::TransactionStatus::SUCCESS;
         }
 
         std::pair<db::meta::TransactionStatus, std::vector<std::string>> student_manager::find_record(
             const std::vector<std::string>& vals_where,
             const std::vector<int>& fields_where
         ) {
-            std::string id = "";
-            for (int i = 0; i < fields_where.size(); ++i) {
-                if (fields_where[i] == 0) {
-                    id = vals_where[i];
-                    break;
-                }
+
+            auto res = find_containers_where_clause(vals_where, fields_where);
+            if (!res.first) {
+                return {db::meta::TransactionStatus::FAIL_ON_INTERNAL, {}};
             }
 
-            if (id == "") {
-                std::vector<std::string> res;
-                for (int i = 0; i < containers.size(); ++i) {
-                    auto ent = containers[i].get();
-                    if (!ent.first) {
-                        return {db::meta::TransactionStatus::FAIL_ON_INTERNAL, {}};
-                    }
-                    
-                    bool eq = true;
-                    for (int i = 0; i < fields_where.size(); ++i) {
-                        eq = eq && (ent.second[fields_where[i]] == vals_where[i]);
-                    }
-
-                    if (!eq) {
-                        continue;
-                    }
-
-                    std::string full_ent = ent.second[0] + " ";
-                    for (int i = 1; i < ent.second.size(); ++i) {
-                        full_ent.append(ent.second[i] + " ");
-                    }
-                    res.push_back(full_ent);
+            std::vector<std::string> ret;
+            for (auto i : res.second) {
+                auto res1 = containers[i].get();
+                if (!res1.first) {
+                    return {db::meta::TransactionStatus::FAIL_ON_INTERNAL, {}};
                 }
-
-                if (res.size() != 0) {
-                    return {db::meta::TransactionStatus::SUCCESS, res};
+                std::string full_ent = res1.second[0] + " ";
+                for (int i = 1; i < res1.second.size(); ++i) {
+                    full_ent.append(res1.second[i] + " ");
                 }
-            } else {
-                for (int i = 0; i < containers.size(); ++i) {
-                    if (containers[i].get_container_id() == id) {
-                        auto res = containers[i].get();
-                        if (!res.first) {
-                            return {db::meta::TransactionStatus::FAIL_ON_INTERNAL, {}};
-                        }
-                        std::string full_ent = res.second[0];
-                        for (int i = 1; i < res.second.size(); ++i) {
-                            full_ent.append(res.second[i]);
-                        }
-                        return {db::meta::TransactionStatus::SUCCESS, {full_ent}};
-                    }
-                }
+                ret.push_back(full_ent);
             }
-            return {db::meta::TransactionStatus::NOT_FOUND, {}};
+
+            if (ret.size() == 0) {
+                return {db::meta::TransactionStatus::NOT_FOUND, {}};
+            }
+            return {db::meta::TransactionStatus::SUCCESS, ret};
         }
 
         db::meta::TransactionStatus student_manager::insert_record(const std::vector<std::string>& entity) {
@@ -99,6 +90,45 @@ namespace db {
                 return db::meta::TransactionStatus::FAIL_ON_INTERNAL;
             }
             return db::meta::TransactionStatus::SUCCESS;
+        }
+
+        std::pair<bool, std::vector<int>> student_manager::find_containers_where_clause(
+            const std::vector<std::string>& vals_where,
+            const std::vector<int>& fields_where
+        ) {
+            std::string id = "";
+            for (int i = 0; i < fields_where.size(); ++i) {
+                if (fields_where[i] == 0) {
+                    id = vals_where[i];
+                    break;
+                }
+            }
+            std::vector<int> conts;
+            if (id == "") {
+                for (int i = 0; i < containers.size(); ++i) {
+                    auto ent = containers[i].get();
+                    if (!ent.first) {
+                        return {false, {}};
+                    }
+                    
+                    bool eq = true;
+                    for (int i = 0; i < fields_where.size(); ++i) {
+                        eq = eq && (ent.second[fields_where[i]] == vals_where[i]);
+                    }
+
+                    if (!eq) {
+                        continue;
+                    }
+                    conts.push_back(i);
+                }
+            } else {
+                for (int i = 0; i < containers.size(); ++i) {
+                    if (containers[i].get_container_id() == id) {
+                        conts.push_back(i);
+                    }
+                }
+            }
+            return {true, conts};
         }
     }
 }

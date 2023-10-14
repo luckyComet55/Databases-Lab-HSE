@@ -37,10 +37,11 @@ namespace db {
                 }
             }
         private:
-
             std::vector<db::fs::Container> containers;
             const std::vector<std::string> fields{"id", "name", "surname", "patronym"};
             const std::filesystem::path root_dir;
+
+            std::pair<bool, std::vector<int>> find_containers_where_clause(const std::vector<std::string>&, const std::vector<int>&);
         };
     }
 }
