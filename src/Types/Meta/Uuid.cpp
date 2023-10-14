@@ -15,7 +15,7 @@ namespace db {
             static std::uniform_int_distribution<> dis(0, 15);
             static std::uniform_int_distribution<> dis2(8, 11);
 
-            std::string generateUuid() {
+            std::string generate_uuid() {
                 std::stringstream ss;
                 int i;
                 ss << std::hex;

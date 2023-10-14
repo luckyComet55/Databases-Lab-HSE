@@ -8,7 +8,7 @@ namespace db {
     namespace meta {
         
         namespace uuid {
-            std::string generateUuid();
+            std::string generate_uuid();
         }
     }
 }

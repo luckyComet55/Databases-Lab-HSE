@@ -10,8 +10,8 @@ set(
     src/Types/Meta/Constants.hpp
     src/Types/Meta/Uuid.hpp
     src/Types/Meta/Uuid.cpp
-    src/dbms/EntityManager.hpp
-    src/dbms/EntityManager.cpp
+    src/dbms/StudentManager.hpp
+    src/dbms/StudentManager.cpp
     src/dbms/Container.hpp
     src/dbms/Container.cpp
     src/main.cpp
