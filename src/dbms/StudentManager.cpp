@@ -24,6 +24,52 @@ namespace db {
             }
         }
 
+        db::meta::TransactionStatus student_manager::update_record(
+            const std::vector<std::string>& vals_where,
+            const std::vector<int>& fields_where,
+            const std::vector<std::string>& vals_update,
+            const std::vector<int>& fields_update
+        ) {
+            auto check_records = find_containers_where_clause(vals_where, fields_where);
+            if (!check_records.first) {
+                return db::meta::TransactionStatus::FAIL_ON_INTERNAL;
+            }
+
+            if (check_records.second.size() == 0) {
+                return db::meta::TransactionStatus::NOT_FOUND;
+            }
+
+            for (auto i : check_records.second) {
+                auto contents = containers[i].get();
+                if (!contents.first) {
+                    return db::meta::TransactionStatus::FAIL_ON_INTERNAL;
+                }
+
+                std::vector<std::string> view{contents.second[1], contents.second[2], contents.second[3]};
+                bool same = true;
+                for (int j = 0; j < fields_update.size(); ++j) {
+                    same = same && (view[fields_update[j]] == vals_update[j]);
+                }
+                if (same) {
+                    continue;
+                }
+                for (int j = 0; j < fields_update.size(); ++j) {
+                    view[fields_update[j] - 1] = vals_update[j];
+                }
+                auto check_duplicate = find_containers_where_clause(view, {1, 2, 3});
+                if (!check_duplicate.first) {
+                    return db::meta::TransactionStatus::FAIL_ON_INTERNAL;
+                } else if(check_duplicate.second.size() != 0) {
+                    return db::meta::TransactionStatus::FAIL_ON_CONSTRAINT;
+                }
+                bool fin_res = containers[i].insert(view);
+                if (!fin_res) {
+                    return db::meta::TransactionStatus::FAIL_ON_INTERNAL;
+                }
+            }
+            return db::meta::TransactionStatus::SUCCESS;
+        }
+
         db::meta::TransactionStatus student_manager::delete_record(
             const std::vector<std::string>& vals_where,
             const std::vector<int>& fields_where

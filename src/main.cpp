@@ -12,7 +12,7 @@ int main(int argc, char* argv[]) {
     }
     std::filesystem::path sandbox{argv[1]};
     db::fs::student_manager manager(sandbox, false);
-    auto res2 = manager.delete_record({"Ivan"}, {1});
+    auto res2 = manager.update_record({"Andrew"}, {1}, {"Ivan"}, {1});
     switch (res2) {
     case db::meta::TransactionStatus::SUCCESS:
         std::cout << "All good\n";
